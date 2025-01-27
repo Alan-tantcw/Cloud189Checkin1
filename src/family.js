@@ -201,8 +201,6 @@ async function main() {
                   logger.info(`账号${index + 1} 用户${userNameInfo}家庭任务:${familyTaskResult}`);
 
                 if (userName=="19952238028"){
-                    
-                    try {
                             logger.log(`账户 ${userNameInfo}开始执行`);
                             const cloudClient = new CloudClient(userName, password);
                             await cloudClient.login();
@@ -226,12 +224,7 @@ async function main() {
                                 1024
                               ).toFixed(2)}G`
                             );
-                          } catch (e) {
-                            logger.error(e);
-                            if (e.code === "ETIMEDOUT") {
-                              throw e;
-                            }
-                          }
+                          
 
                     result_jt=familyCapacityInfo.totalSize /1024 /1024 /1024;
                 }
