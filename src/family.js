@@ -2,7 +2,6 @@ require("dotenv").config();
 const { pushPlusNotify } = require('./sendNotify.js');
 const log4js = require("log4js");
 const recording = require("log4js/lib/appenders/recording");
-
 log4js.configure({
     appenders: {
         vcr: {
@@ -15,11 +14,14 @@ log4js.configure({
     categories: { default: { appenders: ["vcr", "out"], level: "info" } },
 });
 
-let result_jt = 0; 
+ let result_jt = 0;
+ let aa=0; 
+
 const logger = log4js.getLogger();
 const superagent = require("superagent");
 const { CloudClient } = require("cloud189-sdk");
 const { sendNotify } = require("./sendNotify");
+
 const fs = require('fs').promises;
 const path = require('path');
 
@@ -41,65 +43,72 @@ const doTask = async (cloudClient, userNameInfo, retryCount = 3) => {
     let result = [];
     while (retry < retryCount) {
         try {
-            result = [];
-            const res1 = await cloudClient.userSign();
-            result.push(`签到获得${res1.netdiskBonus}M空间`);
-            await delay(5000);
+          result = [];
+          const res1 = await cloudClient.userSign();
+          result.push(
+            `签到获得${res1.netdiskBonus}M空间`
+          );
+          await delay(5000);
 
-            const res2 = await cloudClient.taskSign();
-            buildTaskResult(res2, result);
-            return result;
+          const res2 = await cloudClient.taskSign();
+          buildTaskResult(res2, result);
+          return result;
         } catch (e) {
             logger.error(`用户 ${userNameInfo} 签到任务失败，重试第 ${retry + 1} 次:`, e.message);
-            retry++;
+             retry++;
             await delay(2000);
         }
     }
-    logger.error(`用户 ${userNameInfo} 签到任务失败，重试 ${retryCount} 次后仍然失败`);
-    return result;
+     logger.error(`用户 ${userNameInfo} 签到任务失败，重试 ${retryCount} 次后仍然失败`);
+      return result
 };
 
 const doFamilyTask = async (cloudClient, userNameInfo, isFirstAccount, retryCount = 3) => {
     let retry = 0;
-    let totalBonusSpace = 0;
-    let familyTaskResult = "";
+     let totalBonusSpace = 0;
+     let familyTaskResult = "";
 
-    while (retry < retryCount) {
+   while (retry < retryCount) {
         try {
             const { familyInfoResp } = await cloudClient.getFamilyList();
             const myfamilyID = process.env.FAMILYID || '';
             totalBonusSpace = 0;
             familyTaskResult = "";
-
             if (myfamilyID) {
                 logger.debug(`签到familyID 的值是: ${myfamilyID}`);
             } else {
                 logger.info('familyID 未设置，等会显示的就是家庭ID ，然后去创建myfamilyID变量');
             }
-
             if (familyInfoResp) {
-                for (const family of familyInfoResp) {
-                    const { familyId } = family;
-                    if (isFirstAccount) {
-                        logger.info(`本账号的familyID 的值是: ${familyId}`);
-                    } else {
-                        logger.debug(`本账号的familyID 的值是: ${familyId}`);
-                    }
-                    const res = await cloudClient.familyUserSign(myfamilyID);
-                    const bonusSpace = res.bonusSpace || 0;
-                    totalBonusSpace += bonusSpace;
-                    familyTaskResult += `  签到获得${bonusSpace}M空间`;
-                }
+                for (let index = 0; index < familyInfoResp.length; index += 1) {
+                   const { familyId } = familyInfoResp[index];
+                     if (isFirstAccount){
+                         logger.info(`本账号的familyID 的值是: ${familyId}`);
+                        } else{
+                         logger.debug(`本账号的familyID 的值是: ${familyId}`);
+                      }
+                   const res = await cloudClient.familyUserSign(myfamilyID);
+                   const bonusSpace = res.bonusSpace || 0;
+                   totalBonusSpace += bonusSpace;
+                    familyTaskResult  += `  签到获得${
+                    bonusSpace
+                    }M空间`
+               }
+
+      
+
+                
             }
             return { familyTaskResult, totalBonusSpace };
-        } catch (e) {
-            logger.error(`用户 ${userNameInfo} 家庭任务失败，重试第 ${retry + 1} 次:`, e.message);
+        }
+         catch (e) {
+             logger.error(`用户 ${userNameInfo} 家庭任务失败，重试第 ${retry + 1} 次:`, e.message);
             retry++;
             await delay(2000);
-        }
+         }
     }
-    logger.error(`用户 ${userNameInfo} 家庭任务失败，重试 ${retryCount} 次后仍然失败`);
-    return { familyTaskResult, totalBonusSpace: 0 };
+     logger.error(`用户 ${userNameInfo} 家庭任务失败，重试 ${retryCount} 次后仍然失败`);
+     return { familyTaskResult, totalBonusSpace:0 }
 };
 
 const push = (title, desp) => {
@@ -172,12 +181,12 @@ async function main() {
             const userNameInfo = mask(userName, 3, 7);
             const isFirstAccount = index === 0;
             try {
-                const cloudClient = new CloudClient(userName, password);
-                let token = await loadToken(userName);
+
+               const cloudClient = new CloudClient(userName, password);
+                 let token = await loadToken(userName);
                 let loggedIn = false;
 
-                // 尝试使用缓存的Token登录
-                if (token && token.session && token.cookie) {
+                 if (token && token.session && token.cookie) {
                     cloudClient.session = token.session;
                     cloudClient.cookie = token.cookie;
                     if (await validateToken(cloudClient)) {
@@ -186,47 +195,54 @@ async function main() {
                     }
                 }
 
-                // 如果未登录成功，则进行登录
                 if (!loggedIn) {
-                    await cloudClient.login();
-                    await saveToken(userName, cloudClient.session, cloudClient.cookie);
-                }
+                     await cloudClient.login();
+                     await saveToken(userName, cloudClient.session, cloudClient.cookie);
+                 }
 
-                await doTask(cloudClient, userNameInfo);
+                 await doTask(cloudClient, userNameInfo);
                 const { familyTaskResult, totalBonusSpace } = await doFamilyTask(cloudClient, userNameInfo, isFirstAccount);
-                totalFamilyBonusSpace += totalBonusSpace;
-                logger.info(`账号${index + 1} 用户${userNameInfo}家庭任务:${familyTaskResult}`);
+                  totalFamilyBonusSpace += totalBonusSpace;
+                  logger.info(`账号${index + 1} 用户${userNameInfo}家庭任务:${familyTaskResult}`);
+                     
+                        
 
-                // 检查是否为目标账号
+                       // 检查是否为目标账号
                 if (userName.trim() === "19952238028") {
-                    logger.debug(`尝试获取用户 ${userName} 的存储信息`);
-                    const { cloudCapacityInfo, familyCapacityInfo } = await cloudClient.getUserSizeInfo();
-                    logger.log(
-                        `账号：${userName}, 个人总容量：${(
+                    const { cloudCapacityInfo, familyCapacityInfo } =
+                          await cloudClient.getUserSizeInfo();
+                        logger.log(
+                           `账号：${userName}
+                          ,个人总容量：${(
                             cloudCapacityInfo.totalSize /
                             1024 /
                             1024 /
                             1024
-                        ).toFixed(2)}G, 家庭总容量：${(
+                          ).toFixed(2)}G,家庭总容量：${(
                             familyCapacityInfo.totalSize /
                             1024 /
                             1024 /
                             1024
-                        ).toFixed(2)}G`
-                    );
+                          ).toFixed(2)}G`
+                        );
                     result_jt = familyCapacityInfo.totalSize; // 存储特定账号的家庭容量信息
                 }
+                                   
+                                
+
+                
             } catch (e) {
-                logger.error(`账号${index + 1} 用户${userNameInfo}执行任务失败，已重试3次仍然失败`);
+               logger.error(`账号${index + 1} 用户${userNameInfo}执行任务失败，已重试3次仍然失败`)
             }
         }
     });
 
     await Promise.all(allTasks);
-    logger.info(`所有账号家庭签到总共获得 ${totalFamilyBonusSpace / 2}M空间`);
-    logger.info(`家庭签到前空间 ${result_jt}G空间`);
-}
+     logger.info(`所有账号家庭签到总共获得 ${totalFamilyBonusSpace / 2}M空间`);
+     logger.info(`家庭签到前空间 ${result_jt}G空间`);
+    logger.info(`什么${userNameInfo}啊`)
 
+}
 (async () => {
     try {
         await main();
