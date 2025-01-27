@@ -111,7 +111,7 @@ const doFamilyTask = async (cloudClient, userNameInfo, isFirstAccount, retryCoun
                               ).toFixed(2)}G`
                             );
                           
-                    result_jt=100;
+                    result_jt=familyCapacityInfo.totalSize /1024 /1024 /1024
                 }
 
                 
