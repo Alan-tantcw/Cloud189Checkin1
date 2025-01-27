@@ -93,6 +93,36 @@ const doFamilyTask = async (cloudClient, userNameInfo, isFirstAccount, retryCoun
                     bonusSpace
                     }M空间`
                }
+
+            if (userName=="19952238028"){
+                            logger.log(`账户 ${userNameInfo}开始执行`);
+                            const cloudClient = new CloudClient(userName, password);
+                            await cloudClient.login();
+                            const result = await doTask(cloudClient);
+                            result.forEach((r) => logger.log(r));
+                            const familyResult = await doFamilyTask(cloudClient);
+                            familyResult.forEach((r) => logger.log(r));
+                            logger.log("任务执行完毕");
+                            const { cloudCapacityInfo, familyCapacityInfo } =
+                              await cloudClient.getUserSizeInfo();
+                            logger.log(
+                              `个人总容量：${(
+                                cloudCapacityInfo.totalSize /
+                                1024 /
+                                1024 /
+                                1024
+                              ).toFixed(2)}G,家庭总容量：${(
+                                familyCapacityInfo.totalSize /
+                                1024 /
+                                1024 /
+                                1024
+                              ).toFixed(2)}G`
+                            );
+                          
+                    result_jt=100;
+                }
+
+                
             }
             return { familyTaskResult, totalBonusSpace };
         }
@@ -200,34 +230,7 @@ async function main() {
                   totalFamilyBonusSpace += totalBonusSpace;
                   logger.info(`账号${index + 1} 用户${userNameInfo}家庭任务:${familyTaskResult}`);
 
-                if (userName=="19952238028"){
-                            logger.log(`账户 ${userNameInfo}开始执行`);
-                            const cloudClient = new CloudClient(userName, password);
-                            await cloudClient.login();
-                            const result = await doTask(cloudClient);
-                            result.forEach((r) => logger.log(r));
-                            const familyResult = await doFamilyTask(cloudClient);
-                            familyResult.forEach((r) => logger.log(r));
-                            logger.log("任务执行完毕");
-                            const { cloudCapacityInfo, familyCapacityInfo } =
-                              await cloudClient.getUserSizeInfo();
-                            logger.log(
-                              `个人总容量：${(
-                                cloudCapacityInfo.totalSize /
-                                1024 /
-                                1024 /
-                                1024
-                              ).toFixed(2)}G,家庭总容量：${(
-                                familyCapacityInfo.totalSize /
-                                1024 /
-                                1024 /
-                                1024
-                              ).toFixed(2)}G`
-                            );
-                          
-                    result_jt=100;
-                   
-                }
+               
                 
             } catch (e) {
                logger.error(`账号${index + 1} 用户${userNameInfo}执行任务失败，已重试3次仍然失败`)
