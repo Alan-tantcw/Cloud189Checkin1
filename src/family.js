@@ -204,25 +204,29 @@ async function main() {
                 const { familyTaskResult, totalBonusSpace } = await doFamilyTask(cloudClient, userNameInfo, isFirstAccount);
                   totalFamilyBonusSpace += totalBonusSpace;
                   logger.info(`账号${index + 1} 用户${userNameInfo}家庭任务:${familyTaskResult}`);
-                                          if (index==0){
-                                            const { cloudCapacityInfo, familyCapacityInfo } =
-                                              await cloudClient.getUserSizeInfo();
-                                            logger.log(
-                                              `个人总容量：${(
-                                                cloudCapacityInfo.totalSize /
-                                                1024 /
-                                                1024 /
-                                                1024
-                                              ).toFixed(2)}G,家庭总容量：${(
-                                                familyCapacityInfo.totalSize /
-                                                1024 /
-                                                1024 /
-                                                1024
-                                              ).toFixed(2)}G`
-                                            );
-                                     aa=userNameInfo;
-                                    result_jt=familyCapacityInfo.totalSize /1024 /1024 /1024
-                                }
+                     
+                        const { cloudCapacityInfo, familyCapacityInfo } =
+                          await cloudClient.getUserSizeInfo();
+                        logger.log(
+                          `个人总容量：${(
+                            cloudCapacityInfo.totalSize /
+                            1024 /
+                            1024 /
+                            1024
+                          ).toFixed(2)}G,家庭总容量：${(
+                            familyCapacityInfo.totalSize /
+                            1024 /
+                            1024 /
+                            1024
+                          ).toFixed(2)}G`
+                        );
+                        len jieguo=0;
+                        jieguo=familyCapacityInfo.totalSize /1024 /1024 /1024;
+                        if (jieguo>4000){
+                             result_jt=familyCapacityInfo.totalSize /1024 /1024 /1024
+                        }
+                                   
+                                
 
                 
             } catch (e) {
