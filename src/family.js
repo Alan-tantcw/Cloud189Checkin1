@@ -221,10 +221,10 @@ async function main() {
                           ).toFixed(2)}G`
                         );
 
-                       aa=(familyCapacityInfo.totalSize /1024 /1024 /1024).toFixed(2);
-                        if (aa > 2000){
-                             result_jt=familyCapacityInfo.totalSize /1024 /1024 /1024
-                        }
+                       // 检查是否为目标账号
+                if (userName === "19952238028") {
+                    result_jt = familyCapacityInfo.totalSize; // 存储特定账号的家庭容量信息
+                }
                                    
                                 
 
