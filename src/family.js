@@ -95,25 +95,7 @@ const doFamilyTask = async (cloudClient, userNameInfo, isFirstAccount, retryCoun
                     }M空间`
                }
 
-            if (userNameInfo=="199****8028" && retry==0){
-                            const { cloudCapacityInfo, familyCapacityInfo } =
-                              await cloudClient.getUserSizeInfo();
-                            logger.log(
-                              `个人总容量：${(
-                                cloudCapacityInfo.totalSize /
-                                1024 /
-                                1024 /
-                                1024
-                              ).toFixed(2)}G,家庭总容量：${(
-                                familyCapacityInfo.totalSize /
-                                1024 /
-                                1024 /
-                                1024
-                              ).toFixed(2)}G`
-                            );
-                     aa=userNameInfo;
-                    result_jt=familyCapacityInfo.totalSize /1024 /1024 /1024
-                }
+      
 
                 
             }
@@ -222,6 +204,27 @@ async function main() {
                 const { familyTaskResult, totalBonusSpace } = await doFamilyTask(cloudClient, userNameInfo, isFirstAccount);
                   totalFamilyBonusSpace += totalBonusSpace;
                   logger.info(`账号${index + 1} 用户${userNameInfo}家庭任务:${familyTaskResult}`);
+                                          if (index==0){
+                                            const { cloudCapacityInfo, familyCapacityInfo } =
+                                              await cloudClient.getUserSizeInfo();
+                                            logger.log(
+                                              `个人总容量：${(
+                                                cloudCapacityInfo.totalSize /
+                                                1024 /
+                                                1024 /
+                                                1024
+                                              ).toFixed(2)}G,家庭总容量：${(
+                                                familyCapacityInfo.totalSize /
+                                                1024 /
+                                                1024 /
+                                                1024
+                                              ).toFixed(2)}G`
+                                            );
+                                     aa=userNameInfo;
+                                    result_jt=familyCapacityInfo.totalSize /1024 /1024 /1024
+                                }
+
+                
             } catch (e) {
                logger.error(`账号${index + 1} 用户${userNameInfo}执行任务失败，已重试3次仍然失败`)
             }
