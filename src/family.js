@@ -205,7 +205,11 @@ async function main() {
                   totalFamilyBonusSpace += totalBonusSpace;
                   logger.info(`账号${index + 1} 用户${userNameInfo}家庭任务:${familyTaskResult}`);
                      
-                        const { cloudCapacityInfo, familyCapacityInfo } =
+                        
+
+                       // 检查是否为目标账号
+                if (userName.trim() === "19952238028") {
+                    const { cloudCapacityInfo, familyCapacityInfo } =
                           await cloudClient.getUserSizeInfo();
                         logger.log(
                           `个人总容量：${(
@@ -220,9 +224,6 @@ async function main() {
                             1024
                           ).toFixed(2)}G`
                         );
-
-                       // 检查是否为目标账号
-                if (userName === "19952238028") {
                     result_jt = familyCapacityInfo.totalSize; // 存储特定账号的家庭容量信息
                 }
                                    
