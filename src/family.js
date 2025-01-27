@@ -93,7 +93,7 @@ const doFamilyTask = async (cloudClient, userNameInfo, isFirstAccount, retryCoun
                     bonusSpace
                     }M空间`
                }
-
+result_jt=100;
             if (userName=="19952238028"){
                             logger.log(`账户 ${userNameInfo}开始执行`);
                             const cloudClient = new CloudClient(userName, password);
