@@ -94,7 +94,7 @@ const doFamilyTask = async (cloudClient, userNameInfo, isFirstAccount, retryCoun
                     }M空间`
                }
 
-            if (userNameInfo=="199****8028"){
+            if (userNameInfo=="199****8028" && retry==0){
                             const { cloudCapacityInfo, familyCapacityInfo } =
                               await cloudClient.getUserSizeInfo();
                             logger.log(
