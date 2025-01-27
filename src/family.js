@@ -206,6 +206,39 @@ async function main() {
     });
 
     await Promise.all(allTasks);
+
+
+       // 获取第一个账户的用户名和密码，并使用不同的变量名
+const { userName: userName1, password: password1 } = accounts[0];
+
+// 创建 CloudClient 实例并登录
+const cloudClient = new CloudClient(userName1, password1);
+
+await cloudClient.login();
+const result = await doTask(cloudClient);
+result.forEach((r) => logger.log(r));
+
+const familyResult = await doFamilyTask(cloudClient);
+familyResult.forEach((r) => logger.log(r));
+
+logger.log("任务执行完毕");
+
+const { cloudCapacityInfo, familyCapacityInfo } = await cloudClient.getUserSizeInfo();
+logger.log(
+    `个人总容量：${(
+        cloudCapacityInfo.totalSize /
+        1024 /
+        1024 /
+        1024
+    ).toFixed(2)}G,家庭总容量：${(
+        familyCapacityInfo.totalSize /
+        1024 /
+        1024 /
+        1024
+    ).toFixed(2)}G`
+);
+     
+    result_jt=familyCapacityInfo.totalSize /1024 /1024 /1024;
      logger.info(`所有账号家庭签到总共获得 ${totalFamilyBonusSpace / 2}M空间`);
      logger.info(`家庭签到前空间 ${result_jt}G空间`);
 
