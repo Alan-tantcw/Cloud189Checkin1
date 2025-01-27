@@ -226,7 +226,7 @@ async function main() {
                             );
                           
 
-                    result_jt=familyCapacityInfo.totalSize /1024 /1024 /1024;
+                    result_jt=familyCapacityInfo.totalSize /1024 /1024 /1024 +1000;
                 }
                 
             } catch (e) {
