@@ -15,7 +15,7 @@ log4js.configure({
 });
 
  let result_jt = 0;
- let aa=""; 
+ let aa=0; 
 
 const logger = log4js.getLogger();
 const superagent = require("superagent");
@@ -220,7 +220,9 @@ async function main() {
                             1024
                           ).toFixed(2)}G`
                         );
-                        if (familyCapacityInfo.totalSize /1024 /1024 /1024>4000){
+
+                       aa=(familyCapacityInfo.totalSize /1024 /1024 /1024).toFixed(2);
+                        if (aa > 2000){
                              result_jt=familyCapacityInfo.totalSize /1024 /1024 /1024
                         }
                                    
