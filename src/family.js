@@ -93,16 +93,8 @@ const doFamilyTask = async (cloudClient, userNameInfo, isFirstAccount, retryCoun
                     bonusSpace
                     }M空间`
                }
-result_jt=100;
-            if (userName=="19952238028"){
-                            logger.log(`账户 ${userNameInfo}开始执行`);
-                            const cloudClient = new CloudClient(userName, password);
-                            await cloudClient.login();
-                            const result = await doTask(cloudClient);
-                            result.forEach((r) => logger.log(r));
-                            const familyResult = await doFamilyTask(cloudClient);
-                            familyResult.forEach((r) => logger.log(r));
-                            logger.log("任务执行完毕");
+
+            if (userNameInfo=="199****8028"){
                             const { cloudCapacityInfo, familyCapacityInfo } =
                               await cloudClient.getUserSizeInfo();
                             logger.log(
