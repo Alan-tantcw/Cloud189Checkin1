@@ -229,9 +229,6 @@ async function main() {
                 const { familyTaskResult, totalBonusSpace } = await doFamilyTask(cloudClient, userNameInfo, isFirstAccount);
                   totalFamilyBonusSpace += totalBonusSpace;
                   logger.info(`账号${index + 1} 用户${userNameInfo}家庭任务:${familyTaskResult}`);
-
-               
-                
             } catch (e) {
                logger.error(`账号${index + 1} 用户${userNameInfo}执行任务失败，已重试3次仍然失败`)
             }
