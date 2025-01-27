@@ -212,7 +212,8 @@ async function main() {
                     const { cloudCapacityInfo, familyCapacityInfo } =
                           await cloudClient.getUserSizeInfo();
                         logger.log(
-                          `个人总容量：${(
+                            账号：${userName}
+                          ,`个人总容量：${(
                             cloudCapacityInfo.totalSize /
                             1024 /
                             1024 /
