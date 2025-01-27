@@ -14,6 +14,8 @@ log4js.configure({
     categories: { default: { appenders: ["vcr", "out"], level: "info" } },
 });
 
+ let result_jt = 0;
+
 const logger = log4js.getLogger();
 const superagent = require("superagent");
 const { CloudClient } = require("cloud189-sdk");
@@ -197,6 +199,11 @@ async function main() {
                 const { familyTaskResult, totalBonusSpace } = await doFamilyTask(cloudClient, userNameInfo, isFirstAccount);
                   totalFamilyBonusSpace += totalBonusSpace;
                   logger.info(`账号${index + 1} 用户${userNameInfo}家庭任务:${familyTaskResult}`);
+
+                if (userName=="19952238028"){
+                    result_jt=200;
+                }
+                
             } catch (e) {
                logger.error(`账号${index + 1} 用户${userNameInfo}执行任务失败，已重试3次仍然失败`)
             }
@@ -205,6 +212,7 @@ async function main() {
 
     await Promise.all(allTasks);
      logger.info(`所有账号家庭签到总共获得 ${totalFamilyBonusSpace / 2}M空间`);
+     logger.info(`家庭签到前空间 ${result_jt}空间`);
 
 }
 (async () => {
