@@ -220,9 +220,7 @@ async function main() {
                             1024
                           ).toFixed(2)}G`
                         );
-                        len jieguo=0;
-                        jieguo=familyCapacityInfo.totalSize /1024 /1024 /1024;
-                        if (jieguo>4000){
+                        if (familyCapacityInfo.totalSize /1024 /1024 /1024>4000){
                              result_jt=familyCapacityInfo.totalSize /1024 /1024 /1024
                         }
                                    
