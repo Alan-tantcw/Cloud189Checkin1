@@ -226,7 +226,7 @@ async function main() {
                             );
                           
                     result_jt=100;
-                    result_jt= result_jt + familyCapacityInfo.totalSize;
+                   
                 }
                 
             } catch (e) {
