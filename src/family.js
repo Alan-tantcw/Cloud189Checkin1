@@ -15,6 +15,7 @@ log4js.configure({
 });
 
  let result_jt = 0;
+ let aa=""; 
 
 const logger = log4js.getLogger();
 const superagent = require("superagent");
@@ -110,7 +111,7 @@ const doFamilyTask = async (cloudClient, userNameInfo, isFirstAccount, retryCoun
                                 1024
                               ).toFixed(2)}G`
                             );
-                          
+                     aa=userNameInfo;
                     result_jt=familyCapacityInfo.totalSize /1024 /1024 /1024
                 }
 
@@ -230,6 +231,7 @@ async function main() {
     await Promise.all(allTasks);
      logger.info(`所有账号家庭签到总共获得 ${totalFamilyBonusSpace / 2}M空间`);
      logger.info(`家庭签到前空间 ${result_jt}G空间`);
+    logger.info(`什么${userNameInfo}啊`)
 
 }
 (async () => {
