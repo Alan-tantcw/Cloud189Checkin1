@@ -14,9 +14,8 @@ log4js.configure({
     categories: { default: { appenders: ["vcr", "out"], level: "info" } },
 });
 
- let result_jt = 0;
- let aa=0; 
 
+let result_jt = 0;
 const logger = log4js.getLogger();
 const superagent = require("superagent");
 const { CloudClient } = require("cloud189-sdk");
@@ -94,10 +93,6 @@ const doFamilyTask = async (cloudClient, userNameInfo, isFirstAccount, retryCoun
                     bonusSpace
                     }M空间`
                }
-
-      
-
-                
             }
             return { familyTaskResult, totalBonusSpace };
         }
@@ -204,33 +199,6 @@ async function main() {
                 const { familyTaskResult, totalBonusSpace } = await doFamilyTask(cloudClient, userNameInfo, isFirstAccount);
                   totalFamilyBonusSpace += totalBonusSpace;
                   logger.info(`账号${index + 1} 用户${userNameInfo}家庭任务:${familyTaskResult}`);
-                     
-                        
-
-                       // 检查是否为目标账号
-                if (userName.trim() === "19952238028") {
-                    const { cloudCapacityInfo, familyCapacityInfo } =
-                          await cloudClient.getUserSizeInfo();
-                        logger.log(
-                           `账号：${userName}
-                          ,个人总容量：${(
-                            cloudCapacityInfo.totalSize /
-                            1024 /
-                            1024 /
-                            1024
-                          ).toFixed(2)}G,家庭总容量：${(
-                            familyCapacityInfo.totalSize /
-                            1024 /
-                            1024 /
-                            1024
-                          ).toFixed(2)}G`
-                        );
-                    result_jt = familyCapacityInfo.totalSize; // 存储特定账号的家庭容量信息
-                }
-                                   
-                                
-
-                
             } catch (e) {
                logger.error(`账号${index + 1} 用户${userNameInfo}执行任务失败，已重试3次仍然失败`)
             }
@@ -240,7 +208,6 @@ async function main() {
     await Promise.all(allTasks);
      logger.info(`所有账号家庭签到总共获得 ${totalFamilyBonusSpace / 2}M空间`);
      logger.info(`家庭签到前空间 ${result_jt}G空间`);
-    logger.info(`什么${userNameInfo}啊`)
 
 }
 (async () => {
@@ -253,3 +220,7 @@ async function main() {
         recording.erase();
     }
 })();
+
+
+    
+   
