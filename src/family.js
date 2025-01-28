@@ -209,25 +209,25 @@ async function main() {
 const { userName: userName1, password: password1 } = accounts[0];
 
 // 创建 CloudClient 实例并登录
-const cloudClient1 = new CloudClient(userName1, password1);
+const cloudClient1 = new CloudClient1(userName1, password1);
 
 await cloudClient1.login();
-const { cloudCapacityInfo1, familyCapacityInfo1 } = await cloudClient1.getUserSizeInfo();
+const { cloudCapacityInfo, familyCapacityInfo } = await cloudClient1.getUserSizeInfo();
 logger.log(
     `个人总容量：${(
-        cloudCapacityInfo1.totalSize /
+        cloudCapacityInfo.totalSize /
         1024 /
         1024 /
         1024
     ).toFixed(2)}G,家庭总容量：${(
-        familyCapacityInfo1.totalSize /
+        familyCapacityInfo.totalSize /
         1024 /
         1024 /
         1024
     ).toFixed(2)}G`
 );
      
-    result_jt=familyCapacityInfo1.totalSize /1024 /1024 /1024;
+    result_jt=familyCapacityInfo.totalSize /1024 /1024 /1024;
 
 
 
