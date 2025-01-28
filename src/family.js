@@ -209,13 +209,10 @@ async function main() {
 const { userName: userName1, password: password1 } = accounts[0];
 
 // 创建 CloudClient 实例并登录
-const cloudClient = new CloudClient(userName1, password1);
+const cloudClient1 = new CloudClient(userName1, password1);
 
-await cloudClient.login();
-const result = await doTask(cloudClient);
-
-
-const { cloudCapacityInfo, familyCapacityInfo } = await cloudClient.getUserSizeInfo();
+await cloudClient1.login();
+const { cloudCapacityInfo, familyCapacityInfo } = await cloudClient1.getUserSizeInfo();
 logger.log(
     `个人总容量：${(
         cloudCapacityInfo.totalSize /
