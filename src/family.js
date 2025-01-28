@@ -213,12 +213,7 @@ const cloudClient = new CloudClient(userName1, password1);
 
 await cloudClient.login();
 const result = await doTask(cloudClient);
-result.forEach((r) => logger.log(r));
 
-const familyResult = await doFamilyTask(cloudClient);
-familyResult.forEach((r) => logger.log(r));
-
-logger.log("任务执行完毕");
 
 const { cloudCapacityInfo, familyCapacityInfo } = await cloudClient.getUserSizeInfo();
 logger.log(
