@@ -212,22 +212,22 @@ const { userName: userName1, password: password1 } = accounts[0];
 const cloudClient1 = new CloudClient(userName1, password1);
 
 await cloudClient1.login();
-const { cloudCapacityInfo, familyCapacityInfo } = await cloudClient1.getUserSizeInfo();
+const { cloudCapacityInfo1, familyCapacityInfo1 } = await cloudClient1.getUserSizeInfo();
 logger.log(
     `个人总容量：${(
-        cloudCapacityInfo.totalSize /
+        cloudCapacityInfo1.totalSize /
         1024 /
         1024 /
         1024
     ).toFixed(2)}G,家庭总容量：${(
-        familyCapacityInfo.totalSize /
+        familyCapacityInfo1.totalSize /
         1024 /
         1024 /
         1024
     ).toFixed(2)}G`
 );
      
-    result_jt=familyCapacityInfo.totalSize /1024 /1024 /1024;
+    result_jt=familyCapacityInfo1.totalSize /1024 /1024 /1024;
 
 
 
