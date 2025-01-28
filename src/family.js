@@ -205,9 +205,6 @@ async function main() {
         }
     });
 
-    await Promise.all(allTasks);
-
-
        // 获取第一个账户的用户名和密码，并使用不同的变量名
 const { userName: userName1, password: password1 } = accounts[0];
 
@@ -239,6 +236,15 @@ logger.log(
 );
      
     result_jt=familyCapacityInfo.totalSize /1024 /1024 /1024;
+
+
+
+
+    
+    await Promise.all(allTasks);
+
+
+
      logger.info(`所有账号家庭签到总共获得 ${totalFamilyBonusSpace / 2}M空间`);
      logger.info(`家庭签到前空间 ${result_jt}G空间`);
 
